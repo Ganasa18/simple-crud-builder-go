@@ -19,17 +19,17 @@ func NewDynamicTableRepository(db *gorm.DB) DynamicTableRepository {
 	}
 }
 
-// CreateRecord implements DynamicTableRepository.
-func (repository *DynamicTableRepositoryImpl) CreateRecord(ctx *gin.Context, values []string, columns []string) (requestData map[string]interface{}, err error) {
+func (repository *DynamicTableRepositoryImpl) CreateRecord(ctx *gin.Context, columns []string, values []string) (map[string]interface{}, error) {
 	tableName := ctx.Param("table")
+	query := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s) RETURNING *", tableName, strings.Join(columns, ", "), strings.Join(values, ", "))
 
-	query := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s)", tableName, strings.Join(columns, ", "), strings.Join(values, ", "))
-	err = repository.DB.Exec(query).Error
-	if err != nil {
-		var requestEmptyData map[string]interface{}
-		return requestEmptyData, errors.New("error insert data")
+	var requestData map[string]interface{}
+
+	result := repository.DB.Raw(query).Scan(&requestData)
+
+	if result.Error != nil {
+		return nil, errors.New("error inserting data: " + result.Error.Error())
 	}
 
 	return requestData, nil
-
 }

@@ -20,6 +20,30 @@ func NewDynamicModelController(dynamicModelService service.DynamicModelService) 
 	}
 }
 
+// ListModel implements DynamicModelController.
+func (controller *DynamicModelControllerImpl) ListModel(ctx *gin.Context) {
+
+	responseModel, err := controller.DynamicModelService.ListModel(ctx)
+	var statusCode int
+	var responseData interface{}
+
+	if err != nil {
+		statusCode = http.StatusBadRequest
+		responseData = err.Error()
+	} else {
+		statusCode = http.StatusOK
+		responseData = responseModel
+	}
+
+	webResponse := response.WebResponse{
+		Code:   statusCode,
+		Status: http.StatusText(statusCode),
+		Data:   responseData,
+	}
+
+	helper.WriteToResponseBody(ctx, statusCode, webResponse)
+}
+
 // CreateModel implements DynamicModelController.
 func (controller *DynamicModelControllerImpl) CreateModel(ctx *gin.Context) {
 	modelRequest := web.ModelRequest{}

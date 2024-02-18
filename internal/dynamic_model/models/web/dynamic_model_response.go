@@ -30,3 +30,22 @@ func ToDynamicModelResponseWithError(model domain.Model, err error) (ModelRespon
 
 	return modelResponse, err
 }
+func ToDynamicModelResponse(model domain.Model) ModelResponse {
+	var modelResponse = ModelResponse{
+		Name:      model.Name,
+		Fields:    model.Fields,
+		CreatedAt: model.CreatedAt,
+		UpdatedAt: model.UpdatedAt,
+		DeletedAt: model.DeletedAt,
+	}
+
+	return modelResponse
+}
+
+func ToDynamicModelResponses(models []domain.Model, err error) ([]ModelResponse, error) {
+	var modelResponse []ModelResponse
+	for _, model := range models {
+		modelResponse = append(modelResponse, ToDynamicModelResponse(model))
+	}
+	return modelResponse, err
+}

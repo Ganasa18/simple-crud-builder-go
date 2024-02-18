@@ -20,7 +20,14 @@ func NewDynamicTableService(dynamicTableRepository repository.DynamicTableReposi
 	}
 }
 
-// CreateRecord implements DynamicTableService.
+func (service *DynamicTableServiceImpl) ListRecord(ctx *gin.Context) ([]map[string]interface{}, error) {
+
+	var records []map[string]interface{}
+	recordResponse, err := service.DynamicTableRepository.ListRecord(ctx, records)
+
+	return recordResponse, err
+}
+
 func (service *DynamicTableServiceImpl) CreateRecord(ctx *gin.Context, result interface{}) (requestData map[string]interface{}, err error) {
 	requestData = result.(map[string]interface{})
 

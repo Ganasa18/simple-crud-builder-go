@@ -6,4 +6,5 @@ import (
 
 type DynamicModelController interface {
 	CreateModel(ctx *gin.Context)
+	ListModel(ctx *gin.Context)
 }

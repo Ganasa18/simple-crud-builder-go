@@ -7,4 +7,5 @@ import (
 
 type DynamicModelService interface {
 	CreateModel(ctx *gin.Context, request web.ModelRequest) (web.ModelResponse, error)
+	ListModel(ctx *gin.Context) ([]web.ModelResponse, error)
 }

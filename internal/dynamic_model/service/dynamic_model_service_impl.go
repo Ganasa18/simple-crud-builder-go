@@ -39,3 +39,9 @@ func (service *DynamicModelServiceImpl) CreateModel(ctx *gin.Context, request we
 
 	return web.ToDynamicModelResponseWithError(modelResponse, err)
 }
+
+// ListModel implements DynamicModelService.
+func (service *DynamicModelServiceImpl) ListModel(ctx *gin.Context) ([]web.ModelResponse, error) {
+	roleResponse, err := service.DynamicModelRepository.ListModel(ctx)
+	return web.ToDynamicModelResponses(roleResponse, err)
+}

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"time"
@@ -9,6 +10,7 @@ import (
 	"github.com/Ganasa18/simple-crud-builder-go/pkg/helper"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type DynamicModelRepositoryImpl struct {
@@ -28,6 +30,18 @@ func (repository *DynamicModelRepositoryImpl) CreateModel(ctx *gin.Context, mode
 		return model, err
 	}
 	return model, nil
+}
+
+// ListModel implements DynamicModelRepository.
+func (repository *DynamicModelRepositoryImpl) ListModel(ctx *gin.Context) (models []domain.Model, err error) {
+	err = repository.DB.Preload(clause.Associations).Find(&models).Error
+
+	if err != nil {
+		return models, errors.New("error to get model")
+	}
+
+	return models, nil
+
 }
 
 func (repository *DynamicModelRepositoryImpl) CreateTable(ctx *gin.Context, model domain.Model) {

@@ -12,7 +12,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// Middleware to recover from panics and handle errors
 func ExceptionRecoveryMiddleware(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -20,15 +19,15 @@ func ExceptionRecoveryMiddleware(c *gin.Context) {
 			fmt.Println("Panic recovered:", err)
 			debug.PrintStack()
 
-			// Handle the error (you can customize this function)
+			// Handle the error
 			handleError(c, err)
 
-			// Abort the request to prevent further execution
+			// Abort the request
 			c.Abort()
 		}
 	}()
 
-	// Continue with the request handling
+	// Continue with the request
 	c.Next()
 }
 

@@ -41,3 +41,27 @@ func (service *DynamicTableServiceImpl) CreateRecord(ctx *gin.Context, result in
 
 	return resultData, err
 }
+
+func (service *DynamicTableServiceImpl) GetRecord(ctx *gin.Context) (map[string]interface{}, error) {
+	record := make(map[string]interface{})
+
+	resultData, err := service.DynamicTableRepository.GetRecord(ctx, record)
+
+	return resultData, err
+
+}
+
+func (service *DynamicTableServiceImpl) DeleteRecord(ctx *gin.Context) error {
+	err := service.DynamicTableRepository.DeleteRecord(ctx)
+	return err
+}
+
+func (service *DynamicTableServiceImpl) SoftDeleteRecord(ctx *gin.Context) error {
+	err := service.DynamicTableRepository.SoftDeleteRecord(ctx)
+	return err
+}
+
+func (service *DynamicTableServiceImpl) UpdateRecord(ctx *gin.Context, record map[string]interface{}) (map[string]interface{}, error) {
+	result, err := service.DynamicTableRepository.UpdateRecord(ctx, record)
+	return result, err
+}
